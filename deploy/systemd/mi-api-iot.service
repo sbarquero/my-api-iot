@@ -1,0 +1,17 @@
+[Unit]
+Description=FastAPI IoT API
+After=network.target mariadb.service
+
+[Service]
+Type=exec
+User=apiuser
+WorkingDirectory=/opt/mi-api-iot/app
+Environment=PATH=/opt/mi-api-iot/venv/bin
+ExecStart=/opt/mi-api-iot/venv/bin/uvicorn main:app --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=10
+StandardOutput=append:/var/log/mi-api-iot.log
+StandardError=append:/var/log/mi-api-iot.log
+
+[Install]
+WantedBy=multi-user.target
