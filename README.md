@@ -1,6 +1,6 @@
 # 🌐 API IoT para air12lite
 
-API REST para recibir y servir datos de sensores IoT (como ESP32) con **FastAPI**, **MariaDB** y **Apache2** como proxy inverso.  
+API REST para recibir y servir datos de sensores IoT (como ESP32) con **FastAPI**, **MariaDB** y **Apache2** como proxy inverso.
 Diseñada para desplegarse en **Ubuntu Server 22.04/24.04**.
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi)
@@ -171,6 +171,8 @@ sudo ./deploy/install.sh
 ```
 my-api-iot/
 ├── app/                    # Código fuente de FastAPI
+│   ├── main.py
+│   └── .env
 ├── venv/                   # Entorno virtual (no en Git)
 ├── requirements.txt        # Dependencias de Python
 ├── .env.example            # Plantilla de variables de entorno
@@ -185,7 +187,7 @@ my-api-iot/
 
 ## 📜 Licencia
 
-Este proyecto es de código abierto bajo la Licencia MIT.  
+Este proyecto es de código abierto bajo la Licencia MIT.
 Ver [LICENSE](LICENSE) para más detalles.
 
 ---
