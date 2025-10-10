@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 # Leer variable de entorno para mostrar errores
 SHOW_DB_ERRORS = os.getenv("SHOW_DB_ERRORS", "false").lower() == "true"
 
-app = FastAPI(title="API IoT air12lite", description="Recibe y sirve datos de sensores")
+app = FastAPI(title="API IoT", description="Recibe y sirve datos de sensores")
 
 # --- MODELO DE DATOS ---
 class SensorData(BaseModel):

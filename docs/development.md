@@ -136,11 +136,11 @@ sudo systemctl stop mariadb  # Opcional
 
 Desde tu ESP32, envía datos a:
 ```
-http://air12lite.local:8000/data
+http://nombre_servidor.local:8000/data
 ```
 
 > 💡 Asegúrate de que:
-> - El nombre `air12lite` esté configurado en Windows
+> - El nombre `nombre_servidor` esté configurado en Windows
 > - El firewall de Windows permita el puerto 8000
 > - MariaDB esté en ejecución
 

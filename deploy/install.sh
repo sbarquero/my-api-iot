@@ -76,4 +76,4 @@ sudo a2ensite my-api-iot
 echo "Probando configuración de Apache2..."
 sudo apache2ctl configtest && sudo systemctl reload apache2
 
-echo "✅ ¡Despliegue completado! Accede en: http://air12lite"
+echo "✅ ¡Despliegue completado! Accede en: http://127.0.0.1/"

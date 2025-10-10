@@ -1,4 +1,4 @@
-# 🌐 API IoT para air12lite
+# 🌐 API IoT
 
 API REST para recibir y servir datos de sensores IoT (como ESP32) con **FastAPI**, **MariaDB** y **Apache2** como proxy inverso.
 Diseñada para desplegarse en **Ubuntu Server 22.04/24.04**.
@@ -28,13 +28,13 @@ Diseñada para desplegarse en **Ubuntu Server 22.04/24.04**.
 - Ubuntu Server 22.04 LTS o 24.04 LTS
 - Acceso `sudo`
 - Conexión a internet
-- Nombre de host configurado como `air12lite` (opcional pero recomendado)
+- Nombre de host configurado como `nombre_servidor` (opcional pero recomendado)
 
 ### 1. Clonar el repositorio
 
 ```bash
 sudo apt update && sudo apt install -y git
-git clone https://github.com/tu-usuario/my-api-iot.git
+git clone https://github.com/sbarquero/my-api-iot.git
 cd my-api-iot
 ```
 
@@ -89,18 +89,18 @@ sudo journalctl -u my-api-iot -f
 ### Pruebas locales
 ```bash
 # Probar API
-curl http://localhost
+curl http://localhost:8000
 
 # Probar documentación
-curl http://localhost/docs
+curl http://localhost:8000/docs
 ```
 
 ### Acceso desde la red
 Desde cualquier dispositivo en la misma red:
-- http://air12lite
-- http://air12lite/docs
+- http://nombre_servidor:8000
+- http://nombre_servidor:8000/docs
 
-> 💡 Asegúrate de que el nombre `air12lite` esté resuelto (IP fija en router o mDNS activado).
+> 💡 Asegúrate de que el nombre `nombre_servidor` esté resuelto (IP fija en router o mDNS activado).
 
 ---
 
