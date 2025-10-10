@@ -25,6 +25,13 @@ class SensorData(BaseModel):
     sensor_id: str
     value: float
 
+# --- MODELO DE RESPUESTA ---
+class SensorDataResponse(BaseModel):
+    id: int
+    sensor_id: str
+    value: float
+    timestamp: str  # Devolverá formato ISO 8601 con 'Z'
+
 # --- FUNCIÓN DE CONEXIÓN A BASE DE DATOS ---
 def get_db_connection():
     try:
@@ -43,6 +50,20 @@ def get_db_connection():
             raise HTTPException(status_code=500, detail=f"Error DB: {str(e)}")
         else:
             raise HTTPException(status_code=500, detail="Error interno del servidor")
+
+# --- FUNCIONES DE AYUDA ---
+def format_timestamp_to_iso_z(timestamp_str: str) -> str:
+    """
+    Convierte un timestamp de MariaDB (ej: '2025-10-10 14:02:21') a formato ISO 8601 con 'Z'
+    """
+    try:
+        # Convertir string a datetime
+        dt = datetime.fromisoformat(timestamp_str.replace(' ', 'T'))
+        # Formatear como ISO 8601 con 'Z' (UTC)
+        return dt.strftime('%Y-%m-%dT%H:%M:%SZ')
+    except ValueError:
+        # Si no se puede parsear, devolver tal cual
+        return timestamp_str
 
 # --- ENDPOINTS ---
 @app.get("/")
@@ -119,18 +140,18 @@ def get_all_data(
         if sensor_id:
             conditions.append("sensor_id = %s")
             params.append(sensor_id)
-        
+
         if from_dt:
             conditions.append("timestamp >= %s")
             params.append(from_dt.strftime("%Y-%m-%d %H:%M:%S"))
-        
+
         if to_dt:
             conditions.append("timestamp <= %s")
             params.append(to_dt.strftime("%Y-%m-%d %H:%M:%S"))
 
         if conditions:
             base_query += " WHERE " + " AND ".join(conditions)
-        
+
         base_query += " ORDER BY timestamp DESC"
 
         # Calcular offset para paginación
@@ -143,6 +164,11 @@ def get_all_data(
         cursor = conn.cursor(dictionary=True)
         cursor.execute(paginated_query, params)
         rows = cursor.fetchall()
+
+        # Formatear los timestamps a ISO 8601 con 'Z'
+        for row in rows:
+            if 'timestamp' in row and row['timestamp']:
+                row['timestamp'] = format_timestamp_to_iso_z(str(row['timestamp']))
 
         # Contar total (sin paginación) para metadatos
         count_query = "SELECT COUNT(*) as total FROM sensor_data"
