@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Security
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 import mysql.connector
 from mysql.connector import Error
@@ -17,6 +18,17 @@ logger = logging.getLogger(__name__)
 
 # Leer variable de entorno para mostrar errores
 SHOW_DB_ERRORS = os.getenv("SHOW_DB_ERRORS", "false").lower() == "true"
+
+# Configurar esquema de autenticación
+security = HTTPBearer()
+
+# Obtener la API Key desde .env
+API_KEY = os.getenv("API_KEY", "mi-api-key-segura-por-defecto")
+
+def verify_api_key(credentials: HTTPAuthorizationCredentials = Security(security)):
+    if credentials.credentials != API_KEY:
+        raise HTTPException(status_code=401, detail="API Key inválida")
+    return credentials.credentials
 
 app = FastAPI(title="API IoT", description="Recibe y sirve datos de sensores")
 
@@ -66,12 +78,16 @@ def format_timestamp_to_iso_z(timestamp_str: str) -> str:
         return timestamp_str
 
 # --- ENDPOINTS ---
+
 @app.get("/")
 def read_root():
     return {"mensaje": "¡Servidor FastAPI + MariaDB funcionando en WSL2!"}
 
 @app.post("/data")
-def receive_data(data: SensorData):
+def receive_data(
+    data: SensorData,
+    api_key: str = Security(verify_api_key)  # Autenticación requerida
+):
     conn = None
     cursor = None
     try:
@@ -105,7 +121,8 @@ def get_all_data(
     from_date: Optional[str] = None,
     to_date: Optional[str] = None,
     page: int = 1,
-    page_size: int = 20
+    page_size: int = 20,
+    api_key: str = Security(verify_api_key)  # Autenticación requerida
 ):
     conn = None
     cursor = None
