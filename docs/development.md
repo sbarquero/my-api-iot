@@ -27,38 +27,52 @@ sudo mysql_secure_installation
 # Sigue los pasos y anota la contraseña de root
 ```
 
-### 3. Crear base de datos y usuario
+### 3. Crear base de datos, tabla y usuario
 ```bash
 sudo mysql -u root -p
 ```
 ```sql
+-- Crea base de datos
 CREATE DATABASE sensor_db;
+
+-- Crea usuario
 CREATE USER 'apiuser'@'localhost' IDENTIFIED BY 'contraseña_de_desarrollo';
 GRANT ALL PRIVILEGES ON sensor_db.* TO 'apiuser'@'localhost';
 FLUSH PRIVILEGES;
-EXIT;
+
+-- Crea tabla
+USE sensor_db;
+CREATE TABLE IF NOT EXISTS sensor_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sensor_id VARCHAR(50) NOT NULL,
+    value FLOAT NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
 ---
 
-## 📁 Estructura del proyecto
+## 📁 Clonación del proyecto
 
-Clona o crea tu proyecto en WSL2:
+Clona tu proyecto en WSL2:
 
 ```bash
-mkdir -p ~/my-api-iot
-cd ~/my-api-iot
+sudo apt update && sudo apt install -y git
+git clone https://github.com/sbarquero/my-api-iot.git
+cd my-api-iot
 ```
+
 
 Estructura esperada:
 ```
 my-api-iot/
 ├── app/
 │   ├── main.py
+│   ├── .env
 │   └── ...
 ├── venv/               # Se creará automáticamente
-├── requirements.txt
-└── .env
+├── ...
+└── requirements.txt
 ```
 
 ---
