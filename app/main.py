@@ -27,7 +27,7 @@ API_KEY = os.getenv("API_KEY", "mi-api-key-segura-por-defecto")
 
 def verify_api_key(credentials: HTTPAuthorizationCredentials = Security(security)):
     if credentials.credentials != API_KEY:
-        raise HTTPException(status_code=401, detail="API Key inválida")
+        raise HTTPException(status_code=401, detail=f"API Key inválida: {credentials.credentials}")
     return credentials.credentials
 
 app = FastAPI(title="API IoT", description="Recibe y sirve datos de sensores")
