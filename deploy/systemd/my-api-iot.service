@@ -5,9 +5,9 @@ After=network.target mariadb.service
 [Service]
 Type=exec
 User=apiuser
-WorkingDirectory=/opt/my-api-iot/app
+WorkingDirectory=/opt/my-api-iot
 Environment=PATH=/opt/my-api-iot/venv/bin
-ExecStart=/opt/my-api-iot/venv/bin/uvicorn main:app --host 127.0.0.1 --port 8000
+ExecStart=/opt/my-api-iot/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
 Restart=always
 RestartSec=10
 StandardOutput=append:/var/log/my-api-iot.log
