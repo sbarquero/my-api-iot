@@ -59,8 +59,8 @@ def get_all_data(
             page = 1
         if page_size < 1:
             page_size = 20
-        if page_size > 100:  # Límite máximo por seguridad
-            page_size = 100
+        if page_size > 1000:  # Límite máximo por seguridad
+            page_size = 1000
 
         # Validar y parsear fechas
         from_dt = None

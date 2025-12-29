@@ -10,4 +10,4 @@ app.include_router(sensor_data.router)
 
 @app.get("/")
 def read_root():
-    return {"mensaje": "¡Servidor FastAPI + MariaDB funcionando en WSL2!"}
+    return {"mensaje": "¡Servidor FastAPI + MariaDB funcionando!"}
